@@ -1,0 +1,11 @@
+node_modules
+.next
+.env
+.env.local
+.prisma
+npm-debug.log*
+
+/lib/generated/prisma
+
+# Local Netlify folder
+.netlify
