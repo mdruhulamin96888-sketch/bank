@@ -1,4 +1,4 @@
-import { SignIn } from "@clerk/nextjs";
+import { SignIn, SignUp } from "@clerk/nextjs";
 
 export default function SignInPage() {
   return (
@@ -11,7 +11,7 @@ export default function SignInPage() {
       <div className="w-full max-w-md flex flex-col items-center justify-center z-10 py-10">
         
         {/* Brand/Header Info */}
-        <div className="text-center mb-8 space-y-2">
+        <div className="tehe2xt-center mb-8 space-y-2">
           <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             Welcome Back
           </h1>
@@ -22,7 +22,7 @@ export default function SignInPage() {
 
         {/* Clerk Sign-In Component with Custom Styling */}
         <div className="w-full flex justify-center shadow-2xl rounded-2xl border border-white/10 bg-slate-900/50 backdrop-blur-xl p-2">
-          <SignIn 
+          <SignUp 
             appearance={{
               elements: {
                 card: "bg-transparent shadow-none border-none",
