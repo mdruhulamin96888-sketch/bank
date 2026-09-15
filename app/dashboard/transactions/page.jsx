@@ -1,7 +1,8 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+
 import TransactionsClient from "@/components/TransactionsClient";
+
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -89,14 +90,8 @@ const initialTransactions = [
   },
 ];
 
-export default async function TransactionsPage() {
-  const user = await currentUser();
-
-  if (!user) {
-    redirect("/sign-in");
-  }
-
-  const firstName = user.firstName || user.username || "User";
+export default function TransactionsPage() {
+  const firstName = "User";
 
   return (
     <main className="min-h-screen bg-[#07110d] px-3 py-4 text-slate-100 sm:px-5 sm:py-6">
@@ -114,6 +109,7 @@ export default async function TransactionsPage() {
 
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
+
               <span className="text-xs font-semibold text-emerald-400">
                 BANKING
               </span>
@@ -138,7 +134,7 @@ export default async function TransactionsPage() {
           </div>
         </div>
 
-        {/* Compact Summary Cards */}
+        {/* Summary Cards */}
         <section className="mb-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
           <SummaryCard
             title="Balance"
@@ -173,26 +169,41 @@ export default async function TransactionsPage() {
           />
         </section>
 
-        {/* Dynamic Client Component */}
-        <TransactionsClient initialTransactions={initialTransactions} />
+        {/* Transactions */}
+        <TransactionsClient
+          initialTransactions={initialTransactions}
+        />
       </div>
     </main>
   );
 }
 
-/* Helper Component */
-function SummaryCard({ title, value, text, icon, iconClass }) {
+function SummaryCard({
+  title,
+  value,
+  text,
+  icon,
+  iconClass,
+}) {
   return (
     <div className="rounded-xl border border-slate-800 bg-[#0d1915] p-3.5">
       <div className="mb-3 flex items-center justify-between">
-        <span className="text-xs font-medium text-slate-500">{title}</span>
+        <span className="text-xs font-medium text-slate-500">
+          {title}
+        </span>
 
-        <div className={`rounded-lg border p-1.5 ${iconClass}`}>{icon}</div>
+        <div className={`rounded-lg border p-1.5 ${iconClass}`}>
+          {icon}
+        </div>
       </div>
 
-      <div className="text-lg font-bold text-white">{value}</div>
+      <div className="text-lg font-bold text-white">
+        {value}
+      </div>
 
-      <p className="mt-1 text-[10px] text-slate-600">{text}</p>
+      <p className="mt-1 text-[10px] text-slate-600">
+        {text}
+      </p>
     </div>
   );
 }

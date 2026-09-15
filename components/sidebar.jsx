@@ -20,10 +20,15 @@ export default function Sidebar({ current }) {
   const pathname = usePathname();
   const { signOut } = useClerk();
 
+  // Logout handler
   const handleSignOut = async () => {
-    await signOut({
-      redirectUrl: "/sign-in",
-    });
+    try {
+      await signOut({
+        redirectUrl: "/sign-in",
+      });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   const navItems = [
@@ -66,38 +71,41 @@ export default function Sidebar({ current }) {
   ];
 
   return (
-    <aside className="w-64 h-screen bg-slate-900 text-slate-300 flex flex-col justify-between border-r border-slate-800 p-4 sticky top-0 select-none">
+    <aside className="sticky top-0 flex h-screen w-64 select-none flex-col justify-between border-r border-slate-800 bg-slate-900 p-4 text-slate-300">
+      
+      {/* ================= HEADER ================= */}
       <div>
-        {/* Brand Header / Logo */}
-        <div className="flex items-center gap-3 px-3 py-4 mb-6 border-b border-slate-800">
-          <div className="bg-indigo-600 text-white p-2 rounded-xl shadow-lg shadow-indigo-500/20">
+        <div className="mb-6 flex items-center gap-3 border-b border-slate-800 px-3 py-4">
+          <div className="rounded-xl bg-indigo-600 p-2 text-white shadow-lg shadow-indigo-500/20">
             <ShieldCheck size={22} />
           </div>
-          <span className="font-bold text-lg text-white tracking-wide">
+
+          <span className="text-lg font-bold tracking-wide text-white">
             Greenfield Bank
           </span>
         </div>
 
-        {/* Navigation Menu */}
+        {/* ================= NAVIGATION ================= */}
         <nav className="flex flex-col gap-1.5">
           {navItems.map((item) => {
+            const Icon = item.icon;
+
             const isActive =
               pathname === item.path || current === item.key;
-            const Icon = item.icon;
 
             return (
               <Link
                 key={item.path}
                 href={item.path}
-                className={`relative flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
+                className={`group relative flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-indigo-600/10 text-indigo-400 font-semibold"
+                    ? "bg-indigo-600/10 font-semibold text-indigo-400"
                     : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-200"
                 }`}
               >
-                {/* Active Left Indicator Bar */}
+                {/* Active indicator */}
                 {isActive && (
-                  <span className="absolute left-0 top-2 bottom-2 w-1 bg-indigo-500 rounded-r-full" />
+                  <span className="absolute bottom-2 left-0 top-2 w-1 rounded-r-full bg-indigo-500" />
                 )}
 
                 <Icon
@@ -108,6 +116,7 @@ export default function Sidebar({ current }) {
                       : "text-slate-400 group-hover:text-slate-200"
                   }`}
                 />
+
                 <span>{item.name}</span>
               </Link>
             );
@@ -115,32 +124,37 @@ export default function Sidebar({ current }) {
         </nav>
       </div>
 
-      {/* Footer Options */}
-      <div className="pt-4 border-t border-slate-800 flex flex-col gap-1">
+      {/* ================= FOOTER ================= */}
+      <div className="flex flex-col gap-1 border-t border-slate-800 pt-4">
+        
         {/* Help & Support */}
         <Link
           href="/support"
-          className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-all duration-200 group"
+          className="group flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium text-slate-400 transition-all duration-200 hover:bg-slate-800/60 hover:text-slate-200"
         >
           <HelpCircle
             size={19}
-            className="text-slate-400 group-hover:text-slate-200"
+            className="text-slate-400 transition-colors group-hover:text-slate-200"
           />
+
           <span>Help & Support</span>
         </Link>
 
-        {/* Sign Out Button */}
+        {/* Logout */}
+        <Link href="/sign-in">
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-all duration-200 w-full text-left group"
+          className="group flex w-full items-center gap-3 rounded-lg px-3.5 py-2.5 text-left text-sm font-medium text-rose-400 transition-all duration-200 hover:bg-rose-500/10 hover:text-rose-300"
         >
           <LogOut
             size={19}
-            className="text-red-500 group-hover:text-rose-300 transition-transform group-hover:-translate-x-0.5 duration-200"
+            className="text-red-500 transition-transform duration-200 group-hover:-translate-x-0.5 group-hover:text-rose-300"
           />
+
           <span>Log out</span>
         </button>
+        </Link>
       </div>
     </aside>
   );
